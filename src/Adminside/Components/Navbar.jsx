@@ -55,10 +55,9 @@ function Navbar() {
       }}
       className={`w-full max-w-sm flex items-center justify-center gap-3
       px-6 py-4 rounded-xl text-sm font-medium cursor-pointer transition-all
-      ${
-        getActive(path)
-          ? "bg-white/20 text-white"
-          : "text-white/80 hover:bg-white/10"
+      ${getActive(path)
+        ? "bg-white/20 text-white"
+        : "text-white/80 hover:bg-white/10"
       }`}
     >
       <Icon size={18} />
@@ -68,7 +67,7 @@ function Navbar() {
 
   return (
     <>
-      {/* ================= TOP NAVBAR ================= */}
+      {/* TOP NAVBAR */}
       <div className="sticky top-0 z-40 flex justify-between items-center px-8 sm:px-4 py-3 bg-white/80 backdrop-blur-md border-b border-[#E2E8F0]">
         <button onClick={() => setOpen(true)}>
           <Menu size={22} />
@@ -113,36 +112,27 @@ function Navbar() {
         </div>
       </div>
 
-      {/* ================= FULLSCREEN SIDEBAR ================= */}
+      {/* SIDEBAR OVERLAY */}
       {open && (
         <div
           className="fixed inset-0 z-50 bg-black/50 backdrop-blur-md"
           onClick={() => setOpen(false)}
         >
           <div
-            className="w-full h-full flex flex-col items-center justify-center text-white"
+            className="h-full w-full sm:w-[30%] min-w-[280px] max-w-[420px]
+            flex flex-col items-center justify-center text-white"
             style={{
               background:
                 "linear-gradient(180deg, #6850BE 0%, #4c3aa8 60%, #3c2f7a 100%)",
             }}
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Close */}
-            <button
-              className="absolute top-6 right-6"
-              onClick={() => setOpen(false)}
-            >
+            <button className="absolute top-6 right-6" onClick={() => setOpen(false)}>
               <X size={28} />
             </button>
 
-            {/* Logo */}
-            <img
-              src="/companylogo.png"
-              alt="logo"
-              className="mb-10 h-10 object-contain"
-            />
+            <img src="/companylogo.png" alt="logo" className="mb-10 h-10 object-contain" />
 
-            {/* Navigation */}
             <div className="flex flex-col items-center gap-2 w-full">
               {user?.designation?.name === "Administrator" ? (
                 <>
@@ -152,15 +142,23 @@ function Navbar() {
                   <NavItem path="/tasks" icon={SquareCheckBig} label="Tasks" />
                   <NavItem path="/hr" icon={Heart} label="HR Hub" />
 
-                  <button
+                  {/* Reports */}
+                  <div
                     onClick={() => setDropdown((p) => !p)}
-                    className="text-white/80 mt-4"
+                    className={`w-full max-w-sm flex items-center justify-center gap-3
+                    px-6 py-4 rounded-xl text-sm font-medium cursor-pointer transition-all
+                    ${dropdown ? "bg-white/20 text-white" : "text-white/80 hover:bg-white/10"}`}
                   >
-                    Reports ▾
-                  </button>
+                    <ChartNoAxesColumnIncreasing size={18} />
+                    <span>Reports</span>
+                    <ChevronDown
+                      size={14}
+                      className={`transition-transform ${dropdown ? "rotate-180" : ""}`}
+                    />
+                  </div>
 
                   {dropdown && (
-                    <div className="flex flex-col items-center gap-1">
+                    <div className="w-full max-w-sm flex flex-col gap-1">
                       {[
                         ["/reports1", "Productivity"],
                         ["/heatmap", "Heatmap"],
@@ -176,7 +174,7 @@ function Navbar() {
                             navigate(p);
                             setOpen(false);
                           }}
-                          className="text-white/70 hover:text-white cursor-pointer text-sm"
+                          className="px-10 py-2 text-sm text-white/70 hover:text-white hover:bg-white/10 rounded-lg cursor-pointer"
                         >
                           {l}
                         </div>
