@@ -18,7 +18,7 @@ import Announcementpage from "../src/Adminside/Components/Announcementpage";
 import Performance from "../src/Adminside/Components/Performance";
 import ProductivityReport from "../src/Adminside/Components/ProductivityReport";
 import DailyReport from "../src/Adminside/Components/DailyReport";
-import PerformanceHeatmap from "../src/Adminside/Components/Performanceeatmap";
+import PerformanceHeatmap from "../src/Adminside/Components/Performanceheatmap";
 import RedFlagsReport from "../src/Adminside/Components/RedFlagReports";
 import ProjectSuccessReports from "../src/Adminside/Components/ProjectSuccessReports";
 import SLAComplianceDashboard from "../src/Adminside/Components/SLApage";
