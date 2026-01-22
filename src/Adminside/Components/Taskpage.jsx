@@ -5,6 +5,9 @@ import { toast } from "react-toastify";
 import dayjs from "dayjs";
 import { useNavigate } from "react-router";
 import Createtaskmodal from "./Createtaskmodal";
+import AOS from "aos";
+import "aos/dist/aos.css";
+
 
 const PAGE_SIZE = 5;
 
@@ -75,6 +78,15 @@ const Taskpage = () => {
   const navigate = useNavigate();
 
   // fetch all data
+  useEffect(() => {
+  AOS.init({
+    duration: 700,
+    easing: "ease-out-cubic",
+    once: true,
+    offset: 80,
+  });
+}, []);
+
   useEffect(() => {
     let mounted = true;
     async function fetchAll() {
@@ -234,23 +246,37 @@ const Taskpage = () => {
 
   return (
     <>
-      <div className="px-[26px] py-[22px] bg-[#f7f8fc] min-h-screen font-inter">
-        <div className="w-full flex items-center justify-between mb-[30px]">
-          <h1 className="text-[28px] font-bold text-[#6d5bd0]">Task Manager</h1>
+      <div className="px-8 py-8 bg-gradient-to-br from-[#f6f7ff] via-white to-[#faf8ff]
+  min-h-screen font-inter
+  animate-[fadeIn_.4s_ease]">
+        <div className="flex justify-between items-center mb-10">
+          <div>
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-violet-600 to-indigo-600 bg-clip-text text-transparent">
+              Task Manager
+            </h1>
+            <p className="text-sm text-slate-500 mt-1">
+              Track, assign and manage all tasks in one place
+            </p>
+          </div>
+
           <button
-            className="px-[12px] py-[8px] bg-[#6850BE] text-white font-medium text-[13.3px] rounded-[8px] border border-[#0000001A] flex items-center gap-[8px] cursor-pointer"
-            onClick={() => {
-              setTaskmodal(true);
-            }}
+            onClick={() => setTaskmodal(true)}
+            className="px-5 py-3 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600
+    text-white font-medium shadow-lg hover:shadow-2xl transition-all active:scale-95"
           >
-            Assign Task
+            + Assign Task
           </button>
         </div>
 
+
         {/* KPI CARDS */}
-        <div className="grid grid-cols-4 gap-[18px] mt-[18px]">
+
+        <div className="grid grid-cols-4 gap-[18px] mt-[18px]" data-aos="zoom-in">
           {/* TOTAL TASKS */}
-          <div className="h-[118px] rounded-[16px] px-[20px] flex justify-between items-center bg-white relative overflow-hidden border-l-[10px] border-l-[#7658d7] shadow-[0px_4px_13.9px_0px_rgba(199,181,255,1)] border-t border-t-[#a78aff] border-b border-b-[#a78aff] border-r border-r-[#a78aff]" style={{ background: "#fbf9ff" }}>
+          <div className="h-[118px] rounded-2xl p-5 flex justify-between items-center
+bg-white/80 backdrop-blur-xl border border-white/40
+shadow-lg hover:-translate-y-1 hover:shadow-xl transition-all"
+            style={{ background: "#fbf9ff" }}>
             <div className="flex flex-col">
               <p className="text-[14px] text-[#9ca3af] m-0">
                 Total Tasks <InfoTooltip text="Total number of tasks created across all projects" />
@@ -331,8 +357,9 @@ const Taskpage = () => {
         </div>
 
         {/* TABLE SECTION */}
-        <div className="bg-white rounded-[10px] shadow-[0_6px_18px_rgba(5,6,15,0.03)] overflow-auto mt-[40px]">
-          <div className="flex items-center justify-between px-[20px] py-[20px] pb-[10px]">
+       <div className="bg-white/80 backdrop-blur-xl rounded-2xl shadow-xl border border-white/40 overflow-auto mt-12" data-aos="zoom-in">
+         <div cclassName="flex flex-wrap gap-4 items-center justify-between px-6 py-5
+  sticky top-0 z-10 bg-white/90 backdrop-blur-xl border-b">
             <h2 className="text-[18px] font-semibold text-[#111827]">Task Status</h2>
 
             <div className="flex gap-[12px] items-center">
@@ -345,7 +372,9 @@ const Taskpage = () => {
                   setQuery(e.target.value);
                   setPage(1);
                 }}
-                className="w-[220px] px-[12px] py-[10px] rounded-[8px] border border-[#e5e5e5] bg-[#f1f5f9] text-[13px] outline-none"
+                className="px-4 py-2.5 rounded-xl border border-slate-200 bg-slate-50
+text-sm outline-none focus:ring-2 focus:ring-violet-500/30 transition-all"
+
               />
 
               {/* STATUS FILTER */}
@@ -414,9 +443,17 @@ const Taskpage = () => {
             <tbody>
               {loading ? (
                 <tr>
-                  <td colSpan={8} className="text-center py-[40px] text-[#6b7280] px-[10px]">
-                    Loading...
-                  </td>
+                  <td colSpan={8} className="p-6">
+  <div className="space-y-3">
+    {Array.from({ length: 5 }).map((_, i) => (
+      <div
+        key={i}
+        className="h-10 bg-slate-200/70 rounded-xl animate-pulse"
+      />
+    ))}
+  </div>
+</td>
+
                 </tr>
               ) : pageItems.length === 0 ? (
                 <tr>
@@ -426,7 +463,11 @@ const Taskpage = () => {
                 </tr>
               ) : (
                 pageItems.map((row) => (
-                  <tr key={row._id} className="border-b border-b-[#f3f4f6] hover:bg-[#fafafa] transition-colors">
+<tr
+  key={row._id} data-aos="zoom-in"
+  className="group border-b border-slate-100 hover:bg-violet-50/40 transition-all"
+  
+>
                     <td className="px-[10px] py-[12px] text-[14px] text-[#0f172b] align-middle border-b border-b-[#f3f4f6]">
                       <input type="checkbox" />
                     </td>
@@ -442,8 +483,7 @@ const Taskpage = () => {
                         <img
                           src={
                             row.assigned?.profilepicture ||
-                            `https://i.pravatar.cc/40?u=${
-                              row.assigned?._id || row.assignedto
+                            `https://i.pravatar.cc/40?u=${row.assigned?._id || row.assignedto
                             }`
                           }
                           alt="avatar"
@@ -488,16 +528,16 @@ const Taskpage = () => {
                       {row.project?.projectname || "—"}
                     </td>
 
-                    <td className="px-[10px] py-[12px] text-[14px] text-[#0f172b] align-middle border-b border-b-[#f3f4f6] flex gap-[8px] justify-center">
+                    <td className="px-3 py-3 text-sm flex gap-2 justify-center opacity-0 group-hover:opacity-100 transition">
                       <button
-                        className="bg-[#eef2ff] border-none px-[8px] py-[8px] rounded-[8px] cursor-pointer"
+                        className="p-2 rounded-lg bg-indigo-50 hover:bg-indigo-100 transition"
                         title="Edit"
                         onClick={() => handleEdit(row)}
                       >
                         <Pencil size={16} color="black" fill="black" />
                       </button>
                       <button
-                        className="bg-[#fff1f2] border-none px-[8px] py-[8px] rounded-[8px] cursor-pointer"
+                        className="p-2 rounded-lg bg-red-50 hover:bg-red-100 transition"
                         title="Delete"
                         onClick={() => handleDelete(row)}
                       >
@@ -532,11 +572,12 @@ const Taskpage = () => {
                 return (
                   <button
                     key={idx}
-                    className={`min-w-[32px] h-[32px] rounded-[6px] border-none cursor-pointer text-[14px] ${
-                      page === idx
-                        ? "bg-[#6d5bd0] text-white font-bold"
-                        : "bg-transparent"
-                    }`}
+                    className={`min-w-[34px] h-[34px] rounded-lg text-sm transition-all ${
+  page === idx
+    ? "bg-violet-600 text-white shadow"
+    : "hover:bg-slate-100"
+}`}
+
                     onClick={() => setPage(idx)}
                   >
                     {idx}
@@ -562,11 +603,15 @@ const Taskpage = () => {
 
       {editModal && (
         <div
-          className="fixed inset-0 bg-[rgba(0,0,0,0.45)] flex justify-center items-center z-[999]"
+           className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50
+  animate-[fadeIn_.25s_ease]"
           onClick={() => setEditModal(false)}
         >
           <div
-            className="w-[420px] bg-gradient-to-br from-white to-[#e0d8ff] rounded-[20px] px-[28px] py-[28px] relative"
+            className="w-[440px] bg-white/80 backdrop-blur-2xl
+  border border-white/40 rounded-3xl shadow-[0_30px_80px_rgba(0,0,0,0.25)]
+  px-8 py-8 relative
+  animate-[scaleIn_.25s_ease]"
             onClick={(e) => e.stopPropagation()}
           >
             <button

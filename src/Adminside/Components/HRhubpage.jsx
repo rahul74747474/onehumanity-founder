@@ -1,5 +1,7 @@
 import React, { useEffect, useState, useMemo } from "react";
 import axios from "axios";
+import AOS from "aos";
+import "aos/dist/aos.css";
 import { useLocation } from "react-router";
 
 export default function HRhubpage() {
@@ -93,6 +95,16 @@ export default function HRhubpage() {
   );
 
   useEffect(() => {
+  AOS.init({
+    duration: 700,
+    easing: "ease-out-cubic",
+    once: true,
+    offset: 80,
+  });
+}, []);
+
+
+  useEffect(() => {
     setPayrollPage(1);
   }, [payrollFilter]);
 
@@ -116,13 +128,23 @@ export default function HRhubpage() {
   const pendingBadgeClass = "bg-[#fff7ed] text-[#9a3412] px-2.5 py-1 rounded-full text-[12px]";
 
   return (
-    <div className="px-[50px] py-[30px] bg-[#f9fafb] min-h-screen font-['Inter']">
+<div
+  className="px-[50px] py-[30px] bg-gradient-to-br from-[#f6f7ff] via-white to-[#faf8ff]
+  min-h-screen font-['Inter'] animate-[fadeIn_.4s_ease]"
+  data-aos="fade-up"
+>
+
       <div>
         <h2 className="m-0 text-[24px] font-[600]">HR Hub</h2>
         <p className="mt-1 text-[#6b7280]">Manage onboarding, payroll, and employee documentation</p>
       </div>
 
-      <div className="mt-5 flex gap-2.5 p-1 w-fit bg-white border border-[rgba(226,232,240,1)] rounded-[14px]">
+<div
+  className="mt-5 flex gap-2.5 p-1 w-fit bg-white/80 backdrop-blur-xl
+  border border-white/40 rounded-[14px] sticky top-4 z-20 shadow"
+  data-aos="zoom-in"
+>
+
         <button
           className={`px-4 py-2 rounded-lg border-none cursor-pointer ${
             active === "onboarding"
@@ -152,7 +174,8 @@ export default function HRhubpage() {
               <button
                 key={f}
                 onClick={() => setActiveFilter(f)}
-                className={`px-3 py-1.5 rounded text-[13px] cursor-pointer ${
+                className={`px-3 py-1.5 rounded text-[13px] cursor-pointer
+transition-all active:scale-95 hover:shadow ${
                   activeFilter === f
                     ? "bg-[rgba(104,78,185,1)] text-white font-[600]"
                     : "bg-white border border-[rgba(0,0,0,0.1)]"
@@ -163,7 +186,12 @@ export default function HRhubpage() {
             ))}
           </div>
 
-          <div className="mt-[25px] bg-white px-5 py-5 rounded-[12px] border border-[#e5e7eb]">
+<div
+  className="mt-[25px] bg-white/80 backdrop-blur-xl px-6 py-6
+  rounded-2xl border border-white/40 shadow-xl"
+  data-aos="zoom-in"
+>
+
             <table className="w-full border-collapse">
               <thead>
                 <tr>
@@ -181,7 +209,12 @@ export default function HRhubpage() {
                   const status = normalizeStatus(rawStatus);
 
                   return (
-                    <tr key={i}>
+                    <tr
+  key={i}
+  data-aos="fade-up"
+  className="group hover:bg-violet-50/40 transition-all"
+>
+
                       <td className="py-[14px] border-t border-[#f0f0f0] text-[14px] flex items-center gap-2.5">
                         <div className="w-9 h-9 bg-[#6d5bd0] text-white font-[600] rounded-full flex justify-center items-center text-[13px]">
                           {emp.name?.charAt(0)}
@@ -209,7 +242,11 @@ export default function HRhubpage() {
                       </td>
 
                       <td className="py-[14px] border-t border-[#f0f0f0] text-[14px]">
-                        <button className="bg-none border-none cursor-pointer text-[18px]">⋮</button>
+<button className="opacity-0 group-hover:opacity-100 transition
+bg-slate-100 px-2 py-1 rounded-lg text-[18px]">
+  ⋮
+</button>
+
                       </td>
                     </tr>
                   );

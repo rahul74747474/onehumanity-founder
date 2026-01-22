@@ -433,7 +433,7 @@ function EmployeePage() {
                     className="border-t border-t-[#eee] hover:bg-[rgba(124,58,237,0.04)] transition-all hover:shadow-[0_8px_20px_rgba(124,58,237,0.08)]"
                   >
                     <td className="px-[12px] py-[14px] text-[14px]">
-                      <div className="flex items-center gap-[10px]">
+                      <div className="flex items-center gap-[10px]" onClick={() => navigate(`/employee/${emp._id}`)}>
                         <div className="w-[36px] h-[36px] bg-[#7c3aed] text-white rounded-full flex items-center justify-center text-[14px] font-bold">
                           {initials}
                         </div>
@@ -730,4 +730,4 @@ function EmployeePage() {
   );
 }
 
-export default EmployeePage;
+export default EmployeePage; 

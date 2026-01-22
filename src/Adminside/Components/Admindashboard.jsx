@@ -11,6 +11,8 @@ import {
   CartesianGrid,
   ResponsiveContainer
 } from "recharts";
+import AOS from "aos";
+import "aos/dist/aos.css";
 import { Tag } from "primereact/tag";
 import axios from 'axios';
 import { toast } from 'react-toastify';
@@ -53,6 +55,16 @@ const getLast7DaysIST = () => {
 
 function Admindashboard() {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    AOS.init({
+      duration: 700,
+      easing: "ease-out-cubic",
+      once: true,
+      offset: 60,
+    });
+  }, []);
+
 
   /* ================= STATES ================= */
   const [overlay, setoverlay] = useState(false);
@@ -262,7 +274,7 @@ function Admindashboard() {
           background-color: #f3f4f6;
         }
       `}</style>
-      <div className="w-full bg-gradient-to-b from-[#f7f8ff] to-[#f8fafc] px-6 sm:px-4 py-6 sm:py-4">
+      <div className="w-full px-6 sm:px-4 py-6 sm:py-4 bg-gradient-to-b from-[#f7f8ff] via-[#f9f9ff] to-[#f8fafc] min-h-screen">
         <div className="flex justify-between items-center mb-6 gap-4 max-md:flex-col max-md:items-start">
           <div className="flex flex-col gap-2">
             <div className="text-[#6850BE] text-2xl sm:text-xl font-semibold">{getGreeting()}, {user?.name?.split(" ")[0]}!</div>
@@ -287,7 +299,13 @@ function Admindashboard() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {/* Card 1 */}
           <div
-            className="dashboard-card bg-white border border-[#e5e7eb] rounded-lg shadow-sm p-6 flex justify-between cursor-pointer"
+            data-aos="fade-up"
+  className="dashboard-card bg-white/70 backdrop-blur-xl
+  border border-white/40 rounded-2xl
+  shadow-[0_8px_30px_rgba(104,80,190,0.08)]
+  p-6 flex justify-between cursor-pointer
+  transition-all duration-300
+  hover:-translate-y-1 hover:shadow-[0_12px_40px_rgba(104,80,190,0.15)]"
             onClick={() => { navigate("/employees") }}
           >
             <div className="flex flex-col gap-3">
@@ -304,8 +322,13 @@ function Admindashboard() {
 
           {/* Card 2 */}
           <div
-            className="dashboard-card bg-white border border-[#e5e7eb] rounded-lg shadow-sm p-6 flex justify-between cursor-pointer"
-            onClick={() =>
+            data-aos="fade-up"
+  className="dashboard-card bg-white/70 backdrop-blur-xl
+  border border-white/40 rounded-2xl
+  shadow-[0_8px_30px_rgba(104,80,190,0.08)]
+  p-6 flex justify-between cursor-pointer
+  transition-all duration-300
+  hover:-translate-y-1 hover:shadow-[0_12px_40px_rgba(104,80,190,0.15)]" onClick={() =>
               navigate("/employees", {
                 state: {
                   tab: "onboarding",
@@ -328,8 +351,13 @@ function Admindashboard() {
 
           {/* Card 3 */}
           <div
-            className="dashboard-card bg-white border border-[#e5e7eb] rounded-lg shadow-sm p-6 flex justify-between cursor-pointer"
-            onClick={() =>
+           data-aos="fade-up"
+  className="dashboard-card bg-white/70 backdrop-blur-xl
+  border border-white/40 rounded-2xl
+  shadow-[0_8px_30px_rgba(104,80,190,0.08)]
+  p-6 flex justify-between cursor-pointer
+  transition-all duration-300
+  hover:-translate-y-1 hover:shadow-[0_12px_40px_rgba(104,80,190,0.15)]" onClick={() =>
               navigate("/employees", {
                 state: {
                   status: "Active & UnPaid"
@@ -351,8 +379,13 @@ function Admindashboard() {
 
           {/* Card 4 */}
           <div
-            className="dashboard-card bg-white border border-[#e5e7eb] rounded-lg shadow-sm p-6 flex justify-between cursor-pointer"
-            onClick={() => { navigate("/projects") }}
+data-aos="fade-up"
+  className="dashboard-card bg-white/70 backdrop-blur-xl
+  border border-white/40 rounded-2xl
+  shadow-[0_8px_30px_rgba(104,80,190,0.08)]
+  p-6 flex justify-between cursor-pointer
+  transition-all duration-300
+  hover:-translate-y-1 hover:shadow-[0_12px_40px_rgba(104,80,190,0.15)]"  onClick={() => { navigate("/projects") }}
           >
             <div className="flex flex-col gap-3">
               <div className="text-[#45556C] text-xs flex items-center gap-1">
@@ -369,81 +402,101 @@ function Admindashboard() {
 
         <div className="flex justify-between mt-6 gap-6 w-full max-md:flex-col">
           {/* Graph Left */}
-          <div className="graph-card w-2/3 sm:w-full min-h-[350px] bg-white border border-[#E2E8F0] rounded-lg shadow-sm">
+          <div className="graph-card w-2/3 sm:w-full min-h-[350px] bg-white border border-[#E2E8F0] rounded-lg shadow-sm flex flex-col overflow-hidden">
             <div className="border-b border-[#E2E8F0] flex items-center justify-between px-6 py-5">
               <div className="text-base text-[#0F172B] font-medium flex items-center gap-2">
                 Company Report
                 <InfoTooltip text="Consolidated view of company-wide productivity and activity" />
               </div>
             </div>
-            <div className="w-full" style={{ height: 220 }}>
-              <ResponsiveContainer>
-                <AreaChart data={data}>
-                  <defs>
-                    <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="10%" stopColor="#7C3AED" stopOpacity={0.4} />
-                      <stop offset="90%" stopColor="#7C3AED" stopOpacity={0} />
-                    </linearGradient>
-                  </defs>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E5E7EB" />
-                  <XAxis
-                    dataKey="name"
-                    axisLine={false}
-                    tickLine={false}
-                    tick={{ fill: "#9CA3AF" }}
-                  />
-                  <Area
-                    type="monotone"
-                    dataKey="value"
-                    stroke="#7C3AED"
-                    strokeWidth={3}
-                    fill="url(#colorValue)"
-                  />
-                </AreaChart>
-              </ResponsiveContainer>
+
+            {/* Horizontal scroll container */}
+            <div className="w-full overflow-x-auto">
+              <div className="min-w-[900px]" style={{ height: 220 }}>
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart data={data}>
+                    <defs>
+                      <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="10%" stopColor="#7C3AED" stopOpacity={0.4} />
+                        <stop offset="90%" stopColor="#7C3AED" stopOpacity={0} />
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E5E7EB" />
+                    <XAxis
+                      dataKey="name"
+                      axisLine={false}
+                      tickLine={false}
+                      tick={{ fill: "#9CA3AF" }}
+                    />
+                    <Area
+                      type="monotone"
+                      dataKey="value"
+                      stroke="#7C3AED"
+                      strokeWidth={3}
+                      fill="url(#colorValue)"
+                    />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </div>
             </div>
           </div>
 
+
           {/* Graph Right */}
-          <div className="graph-card w-1/3 sm:w-full min-h-[350px] bg-white border border-[#E2E8F0] rounded-lg shadow-sm overflow-y-hidden">
+         <div
+  data-aos="fade-left"
+  data-aos-delay="200"
+  className="graph-card w-1/3 sm:w-full h-[350px]
+  bg-white/70 backdrop-blur-xl border border-white/40
+  rounded-2xl shadow-lg flex flex-col overflow-hidden"
+>
             <div className="px-6 py-5 border-b border-[#E2E8F0] text-base text-[#0F172B] flex items-center gap-2">
               <TriangleAlert color='#FB2C36' size={20} />
               <span>Red Flags</span>
               <InfoTooltip text="Employees with missed reports, prolonged inactivity, or overdue tasks" />
             </div>
-            <div className="flex flex-col items-center gap-2 p-4 h-full overflow-auto">
+
+            <div className="flex flex-col gap-2 p-4 flex-1 overflow-y-auto">
               {getYesterdayRedFlags().length === 0 ? (
                 <div className="text-center py-8 text-[#45556C]">
                   🎉 No red flags detected yesterday
                 </div>
               ) : (
-                getYesterdayRedFlags().map((e, id) => {
-                  return (
-                    <div
-                      key={id}
-                      className="red-flag-item w-full p-4 border border-[#E2E8F0] rounded-lg flex justify-between gap-3"
-                    >
-                      <div className="flex flex-col justify-center flex-1 min-w-0">
-                        <div className="text-[#45556C] text-xs mb-1">
-                          {redflagdetail(e?.userId?.toString())}
-                        </div>
-                        <div className="text-[#45556C] text-xs">
-                          {new Date(e.date).toLocaleDateString()}
-                        </div>
+                getYesterdayRedFlags().map((e, id) => (
+                  <div
+                    key={id}
+                   className="red-flag-item w-full p-4 bg-white/60 backdrop-blur-md
+border border-white/40 rounded-xl flex justify-between gap-3
+transition-all duration-300 hover:shadow-md hover:-translate-y-[1px]"
+onClick={() => navigate(`/employee/${e.userId}`)}
+                  >
+                    <div className="flex flex-col justify-center flex-1 min-w-0">
+                      <div className="text-[#45556C] text-xs mb-1 truncate">
+                        {redflagdetail(e?.userId?.toString())}
                       </div>
-                      <div className={`text-xs font-medium px-2.5 py-1.5 rounded-md whitespace-nowrap flex items-center ${severityColorMap[e.severity]}`}>
-                        {e.severity}
+                      <div className="text-[#45556C] text-xs">
+                        {new Date(e.date).toLocaleDateString()}
                       </div>
                     </div>
-                  );
-                })
+                    <div className={`text-xs font-medium px-2.5 py-1.5 rounded-md whitespace-nowrap flex items-center ${severityColorMap[e.severity]}`}>
+                      {e.severity}
+                    </div>
+                  </div>
+                ))
               )}
             </div>
           </div>
+
         </div>
 
         {/* Table Container */}
-        <div className="mt-6 bg-white border border-[#E2E8F0] rounded-lg shadow-sm overflow-hidden">
+       <div
+  data-aos="fade-up"
+  data-aos-delay="250"
+  className="mt-6 bg-white/70 backdrop-blur-xl
+  border border-white/40 rounded-2xl shadow-lg overflow-hidden"
+>
+
           <div className="px-6 py-5 border-b border-[#E2E8F0]">
             <div className="text-lg text-[#0F172B] font-semibold">Recent Employees</div>
           </div>
@@ -470,7 +523,7 @@ function Admindashboard() {
 
               <tbody>
                 {paginatedEmployees.map((row) => (
-                  <tr key={row._id} className="table-row border-b border-[#E2E8F0]">
+                  <tr key={row._id} data-aos="fade-up" data-aos-delay="50" className=" table-row border-b border-[#E2E8F0]" onClick={() => navigate(`/employee/${row._id}`)}>
                     <td className="px-6 py-4 text-sm text-[#0f172a]">{row.name}</td>
                     <td className="px-6 py-4 text-sm">
                       <span className={`px-2.5 py-1.5 rounded text-xs font-medium ${statusColorMap[row.status]}`}>

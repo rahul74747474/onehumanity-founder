@@ -11,9 +11,11 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.18",
+    "aos": "^2.3.4",
     "axios": "^1.13.2",
     "date-fns": "^4.1.0",
     "dayjs": "^1.11.19",
+    "framer-motion": "^12.28.2",
     "lucide-react": "^0.562.0",
     "primereact": "^10.9.7",
     "react": "^19.2.0",

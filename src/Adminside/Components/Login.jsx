@@ -97,7 +97,7 @@ const Login = () => {
       <div className="animate-float-before"></div>
       <div className="animate-float-after"></div>
       
-      <div className="w-full max-w-[1200px] grid grid-cols-2 gap-20 items-center relative z-10 md:grid-cols-1 md:gap-10">
+      <div className="w-full max-w-[1200px] grid grid-cols-1 lg:grid-cols-2 gap-16 items-center relative z-10">
         {/* Left Side - Content */}
         <div className="flex flex-col gap-10" style={{animation: 'slideInLeft 1s ease-out'}}>
           <div className="flex items-center" style={{animation: 'fadeInDown 1s ease-out 0.2s both'}}>
@@ -130,7 +130,7 @@ const Login = () => {
 
         {/* Right Side - Login Form */}
         <div className="flex justify-center" style={{animation: 'slideInRight 1s ease-out 0.3s both'}}>
-          <div className="w-full max-w-[30vw] bg-gradient-to-br from-[rgba(203,189,255,0.24)] to-[rgba(100,98,207,0.13)] backdrop-blur-[20px] border border-[rgba(255,255,255,0.5)] rounded-[24px] p-10 box-shadow: 0 20px 40px rgba(99, 102, 241, 0.1); transition: transform 0.3s ease, box-shadow 0.3s ease;" style={{animation: 'scaleIn 0.8s ease-out 0.5s both', boxShadow: '0 20px 40px rgba(99, 102, 241, 0.1)'}}>
+          <div className="w-full max-w-[480px] bg-white/75 backdrop-blur-2xl border border-white/40 rounded-[24px] p-10 shadow-[0_20px_50px_rgba(104,80,190,0.15)] transition-all duration-300 hover:shadow-[0_24px_60px_rgba(104,80,190,0.25)]" style={{animation: 'scaleIn 0.8s ease-out 0.5s both'}}>
             <div className="mb-8 flex flex-col justify-start" style={{animation: 'fadeInDown 1s ease-out 0.7s both'}}>
               <h2 className="text-[28px] font-bold text-[#40239B] mb-2">Welcome Back</h2>
               <p className="text-[16px] text-[#64748b]">Please enter your details to sign in.</p>
@@ -147,7 +147,7 @@ const Login = () => {
                     value={email}
                     onChange={(e) => setemail(e.target.value)}
                     required
-                    className="w-full py-4 px-4 pl-12 border border-[rgba(148,163,184,0.3)] rounded-[12px] bg-[rgba(255,255,255,0.8)] text-[16px] text-[#1e293b] transition-all duration-300 focus:outline-none focus:border-[#8b5cf6] focus:shadow-[0_0_0_3px_rgba(139,92,246,0.1)] focus:translate-y-[-2px]"
+                    className="w-full py-4 px-4 pl-12 border border-[rgba(104,80,190,0.25)] rounded-[12px] bg-white/60 text-[16px] text-[#1e293b] transition-all duration-300 hover:border-[rgba(104,80,190,0.4)] focus:outline-none focus:border-[#6850BE] focus:shadow-[0_0_0_4px_rgba(104,80,190,0.15)] focus:translate-y-[-2px]"
                   />
                 </div>
               </div>
@@ -162,7 +162,7 @@ const Login = () => {
                     value={pass}
                     onChange={(e) => setpass(e.target.value)}
                     required
-                    className="w-full py-4 px-4 pl-12 border border-[rgba(148,163,184,0.3)] rounded-[12px] bg-[rgba(255,255,255,0.8)] text-[16px] text-[#1e293b] transition-all duration-300 focus:outline-none focus:border-[#8b5cf6] focus:shadow-[0_0_0_3px_rgba(139,92,246,0.1)] focus:translate-y-[-2px]"
+                    className="w-full py-4 px-4 pl-12 border border-[rgba(104,80,190,0.25)] rounded-[12px] bg-white/60 text-[16px] text-[#1e293b] transition-all duration-300 hover:border-[rgba(104,80,190,0.4)] focus:outline-none focus:border-[#6850BE] focus:shadow-[0_0_0_4px_rgba(104,80,190,0.15)] focus:translate-y-[-2px]"
                   />
                 </div>
               </div>
@@ -171,7 +171,7 @@ const Login = () => {
                 <a href="/reset-password" className="text-sm text-[#684EB9] no-underline transition-all duration-300 hover:underline hover:translate-y-[-1px]">Forgot password?</a>
               </div>
 
-              <button type='submit' className="w-full py-4 bg-[#684EB9] text-white border-none rounded-[12px] text-[16px] font-bold cursor-pointer flex items-center justify-center gap-2 transition-all duration-300 relative overflow-hidden" style={{animation: 'fadeInUp 0.6s ease-out 1.5s both'}} onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 10px 30px rgba(139, 92, 246, 0.4)'} onMouseLeave={(e) => e.currentTarget.style.boxShadow = 'none'}>
+              <button type='submit' className="w-full py-4 bg-gradient-to-r from-[#684EB9] to-[#6850BE] text-white border-none rounded-[14px] text-[16px] font-bold cursor-pointer flex items-center justify-center gap-2 transition-all duration-300 relative overflow-hidden shadow-[0_8px_24px_rgba(104,80,190,0.3)]" style={{animation: 'fadeInUp 0.6s ease-out 1.5s both'}} onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 12px 40px rgba(104, 80, 190, 0.45)'} onMouseLeave={(e) => e.currentTarget.style.boxShadow = '0 8px 24px rgba(104,80,190,0.3)'}>
                 {loading ? 'Logging In...' : 'Login'}
                 <ArrowRight size={20} />
               </button>

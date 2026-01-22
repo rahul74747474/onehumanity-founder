@@ -96,49 +96,63 @@ const BulkAssignModal = ({ modal, setModal, roles }) => {
   if (!modal) return null;
 
   return (
-    <div className="fixed inset-0 bg-[rgba(0,0,0,0.4)] flex justify-center items-center z-50">
+    <div className="fixed inset-0 bg-[rgba(0,0,0,0.3)] backdrop-blur-sm flex justify-center items-center z-50">
       <style>{`
         .bulk-input, .bulk-select {
-          transition: all 0.2s ease-in-out;
+          transition: all 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
+          background: rgba(255, 255, 255, 0.5);
+          border-color: rgba(104, 80, 190, 0.2);
+        }
+        .bulk-input:hover, .bulk-select:hover {
+          border-color: rgba(104, 80, 190, 0.4);
         }
         .bulk-input:focus, .bulk-select:focus {
-          box-shadow: 0 0 0 3px rgba(123, 97, 255, 0.1);
-          border-color: #7b61ff;
+          box-shadow: 0 0 0 3px rgba(104, 80, 190, 0.1);
+          border-color: #6850BE;
+          background: rgba(255, 255, 255, 0.7);
+          outline: none;
         }
         .user-item {
-          transition: all 0.2s ease-in-out;
+          transition: all 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
         }
         .user-item:hover {
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+          transform: translateX(4px);
+          box-shadow: 0 4px 12px rgba(104, 80, 190, 0.1);
+          border-color: rgba(104, 80, 190, 0.3);
+          background: rgba(104, 80, 190, 0.03);
+        }
+        .user-item.selected {
+          background: linear-gradient(135deg, rgba(104, 80, 190, 0.08) 0%, rgba(104, 80, 190, 0.03) 100%);
+          border-color: rgba(104, 80, 190, 0.4);
         }
       `}</style>
-      <div className="bg-white w-full max-w-4xl h-[88vh] rounded-xl p-8 sm:p-6 flex flex-col relative overflow-hidden shadow-lg">
+      <div className="modal-animate bg-white/85 backdrop-blur-2xl w-full max-w-4xl h-[88vh] rounded-[20px] p-8 sm:p-6 flex flex-col relative overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.2)] border border-white/30">
         {/* HEADER */}
         <div className="flex justify-between items-center mb-2">
-          <h2 className="text-xl sm:text-lg font-semibold text-gray-900">Bulk Role Assignment</h2>
-          <button className="bg-none border-none cursor-pointer text-gray-500 hover:text-gray-700 transition-colors p-1 -mr-1" onClick={() => setModal(false)}>
-            <X size={20} />
+          <h2 className="text-2xl sm:text-lg font-bold text-[#333]">Bulk Role Assignment</h2>
+          <button className="bg-none border-none cursor-pointer text-[#999] hover:text-[#6850BE] transition-colors p-1 -mr-1" onClick={() => setModal(false)}>
+            <X size={24} />
           </button>
         </div>
 
-        <p className="text-sm text-gray-600 mb-6">
+        <p className="text-sm text-[#666] mb-6">
           Select and assign a role to multiple people at once
         </p>
 
         {/* SEARCH + FILTER GRID */}
         <div className="grid grid-cols-2 gap-6 sm:grid-cols-1 mb-6">
           <div>
-            <label className="text-sm font-medium text-gray-700 block mb-2">Search Users</label>
+            <label className="text-xs font-bold text-[#666] block mb-2 uppercase tracking-[0.5px]">Search Users</label>
             <input
-              className="bulk-input w-full px-4 py-2.5 rounded-lg border border-[#e5e7eb] outline-none text-sm"
+              className="bulk-input w-full px-4 py-3 rounded-lg border outline-none text-sm"
               placeholder="Search by name..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
 
-            <label className="text-sm font-medium text-gray-700 block mb-2 mt-4">Assign Role</label>
+            <label className="text-xs font-bold text-[#666] block mb-2 mt-4 uppercase tracking-[0.5px]">Assign Role</label>
             <select
-              className="bulk-select w-full px-4 py-2.5 rounded-lg border border-[#e5e7eb] outline-none text-sm"
+              className="bulk-select w-full px-4 py-3 rounded-lg border outline-none text-sm"
               value={selectedRole}
               onChange={(e) => setSelectedRole(e.target.value)}
             >
@@ -152,9 +166,9 @@ const BulkAssignModal = ({ modal, setModal, roles }) => {
           </div>
 
           <div>
-            <label className="text-sm font-medium text-gray-700 block mb-2">Filter by Role</label>
+            <label className="text-xs font-bold text-[#666] block mb-2 uppercase tracking-[0.5px]">Filter by Role</label>
             <select
-              className="bulk-select w-full px-4 py-2.5 rounded-lg border border-[#e5e7eb] outline-none text-sm"
+              className="bulk-select w-full px-4 py-3 rounded-lg border outline-none text-sm"
               value={filterDept}
               onChange={(e) => setFilterDept(e.target.value)}
             >
@@ -169,7 +183,7 @@ const BulkAssignModal = ({ modal, setModal, roles }) => {
           </div>
         </div>
 
-        <div className="h-px bg-[#e5e7eb]"></div>
+        <div className="h-px bg-[rgba(104,80,190,0.1)]"></div>
 
         {/* SELECT ALL */}
         <div className="flex items-center gap-3 my-4 text-sm font-medium">
@@ -177,30 +191,30 @@ const BulkAssignModal = ({ modal, setModal, roles }) => {
             type="checkbox"
             checked={selectAll}
             onChange={toggleSelectAll}
-            className="cursor-pointer w-4 h-4"
+            className="cursor-pointer w-4 h-4 accent-[#6850BE]"
           />
-          <label className="cursor-pointer text-gray-700">Select All ({filteredUsers.length} users)</label>
+          <label className="cursor-pointer text-[#333]">Select All ({filteredUsers.length} users)</label>
         </div>
 
         {/* USER LIST */}
         <div className="flex-1 overflow-y-auto pr-2 mb-4">
           {filteredUsers.length === 0 ? (
-            <div className="text-center py-8 text-gray-500">No users found</div>
+            <div className="text-center py-8 text-[#999]">No users found</div>
           ) : (
             filteredUsers.map((emp) => (
               <div
                 key={emp._id}
-                className={`user-item flex items-center gap-4 py-3 px-4 rounded-lg border mb-2 cursor-pointer ${
+                className={`user-item flex items-center gap-4 py-3 px-4 rounded-lg border mb-2 cursor-pointer transition-all ${
                   selectedUsers.includes(emp._id)
-                    ? "border-[#7b61ff] bg-[#f8f6ff]"
-                    : "border-[#e5e7eb] bg-white"
+                    ? "selected"
+                    : "border-[rgba(104,80,190,0.1)] bg-white/30"
                 }`}
               >
                 <input
                   type="checkbox"
                   checked={selectedUsers.includes(emp._id)}
                   onChange={() => toggleUser(emp._id)}
-                  className="cursor-pointer w-4 h-4"
+                  className="cursor-pointer w-4 h-4 accent-[#6850BE]"
                 />
 
                 <img
@@ -213,8 +227,8 @@ const BulkAssignModal = ({ modal, setModal, roles }) => {
                 />
 
                 <div className="flex flex-col flex-1 min-w-0">
-                  <div className="font-medium text-sm text-gray-900">{emp.name}</div>
-                  <div className="text-xs text-gray-500">{emp.role}</div>
+                  <div className="font-medium text-sm text-[#333]">{emp.name}</div>
+                  <div className="text-xs text-[#999]">{emp.role}</div>
                 </div>
               </div>
             ))
@@ -222,15 +236,15 @@ const BulkAssignModal = ({ modal, setModal, roles }) => {
         </div>
 
         {/* FOOTER */}
-        <div className="flex justify-end gap-3 pt-4 border-t border-[#e5e7eb]">
+        <div className="flex justify-end gap-3 pt-4 border-t border-[rgba(104,80,190,0.1)]">
           <button
-            className="px-4 py-2 border border-[#e5e7eb] rounded-lg text-sm font-medium cursor-pointer text-gray-700 hover:bg-gray-50 transition-colors"
+            className="px-4 py-2 border border-[rgba(104,80,190,0.2)] rounded-lg text-sm font-medium cursor-pointer text-[#666] hover:bg-[rgba(104,80,190,0.05)] transition-colors"
             onClick={() => setModal(false)}
           >
             Cancel
           </button>
           <button
-            className="px-4 py-2 bg-[#7b61ff] text-white rounded-lg text-sm font-medium cursor-pointer hover:bg-[#6b52dd] transition-colors"
+            className="px-4 py-2 bg-gradient-to-r from-[#684EB9] to-[#6850BE] text-white rounded-lg text-sm font-medium cursor-pointer hover:shadow-[0_8px_24px_rgba(104,80,190,0.35)] transition-all"
             onClick={assignRole}
           >
             Assign Role
