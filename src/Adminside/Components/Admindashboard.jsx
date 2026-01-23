@@ -88,7 +88,28 @@ function Admindashboard() {
   const [loading, setLoading] = useState(false);
   const [sortOrder, setSortOrder] = useState("desc");
   const [user, setUser] = useState("");
+
+  const [designation, setDesignation] = useState("");
+const [salary, setSalary] = useState("");
+const [aadhar, setAadhar] = useState("");
+const [pan, setPan] = useState("");
+const [accountNo, setAccountNo] = useState("");
+const [ifsc, setIfsc] = useState("");
+const [status, setStatus] = useState("Onboarding");
+
   const itemsPerPage = 5;
+const handleactivepaid = () => {
+  return employees?.filter(
+    e => e.status === "Active & Paid"
+  )?.length || 0;
+};
+
+const handleactiveunpaid = () => {
+  return employees?.filter(
+    e => e.status === "Active & Unpaid"
+  )?.length || 0;
+};
+
 
   useEffect(() => {
     axios.get(`https://backonehf.onrender.com/api/v1/admin/getalluser`, { withCredentials: true })
@@ -178,51 +199,78 @@ function Admindashboard() {
     "low": "bg-[rgba(219,234,254,1)] text-[rgba(20,71,230,1)] border border-[rgba(190,219,255,1)]",
   };
 
-  const handleactivepaid = () => {
-    const ap = employees?.filter((e) => e.status === "Active & Paid")
-    return ap?.length
+const handleaddu = async () => {
+  try {
+    setLoading(true);
+
+    const payload = {
+      name: fullName.trim(),
+      email: email.trim(),
+      password,
+
+      status,
+
+      designation: {
+        name: designation || "Employee"
+      },
+
+      salary: {
+        amount: Number(salary) || 0
+      },
+
+      documents: {
+        aadhar: aadhar || "",
+        pan: pan || ""
+      },
+
+      bankdetails: {
+        accountno: accountNo || null,
+        ifsc: ifsc || ""
+      },
+
+      onboarding: {
+        status: "Incomplete"
+      }
+    };
+
+    await axios.post(
+      "http://localhost:5000/api/v1/admin/addemployee",
+      payload,
+      { withCredentials: true }
+    );
+
+
+    toast.success("Employee added successfully");
+    setoverlay(false);
+
+    // 🔄 Refresh employees
+    const res = await axios.get(
+      "https://backonehf.onrender.com/api/v1/admin/getalluser",
+      { withCredentials: true }
+    );
+    setEmployees(res.data.message || []);
+
+    // 🧹 reset form
+    setFirstName("");
+    setLastName("");
+    setEmail("");
+    setPassword("");
+    setDesignation("");
+    setSalary("");
+    setAadhar("");
+    setPan("");
+    setAccountNo("");
+    setIfsc("");
+
+  } catch (error) {
+    console.error(error);
+    toast.error(error?.response?.data?.message || "Something went wrong");
+  } finally {
+    setLoading(false);
   }
+};
 
-  const handleactiveunpaid = () => {
-    const au = employees?.filter((e) => e.status === "Active & Unpaid")
-    return au?.length
-  }
 
-  const handleaddu = async () => {
-    try {
-      console.log({
-        name: fullName,
-        email: email,
-        password: password,
-        gender,
-        dob: dob,
-      });
-
-      setLoading(true);
-
-      const response = await axios.post(
-        "https://backonehf.onrender.com/api/v1/admin/addemployee",
-        {
-          name: fullName,
-          email: email,
-          password: password,
-        },
-        { withCredentials: true }
-      );
-
-      console.log(response);
-      toast.success("Employees Added Successfully");
-      setoverlay(false);
-      window.location.reload();
-
-    } catch (error) {
-      console.log("Sometthing went wrong", error.message);
-      toast.error("Something Went Wrong");
-
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const getGreeting = () => {
     const hour = new Date().getHours();
@@ -572,97 +620,149 @@ onClick={() => navigate(`/employee/${e.userId}`)}
 
       {/* MODAL OVERLAY */}
       {overlay && (
-        <div
-          className="fixed inset-0 bg-[rgba(0,0,0,0.4)] flex justify-center items-center z-50"
-          onClick={() => setoverlay(false)}
+  <div
+    className="fixed inset-0 bg-[rgba(0,0,0,0.4)] flex justify-center items-center z-50"
+    onClick={() => setoverlay(false)}
+  >
+    <div
+      className="w-full max-w-3xl bg-white rounded-xl p-8 sm:p-6 relative font-sans max-h-[90vh] overflow-auto shadow-lg"
+      onClick={(e) => e.stopPropagation()}
+    >
+      {/* CLOSE */}
+      <button
+        className="absolute top-6 right-6 text-[#6d5bd0] hover:text-[#5a4099]"
+        onClick={() => setoverlay(false)}
+      >
+        <X size={24} />
+      </button>
+
+      {/* TITLE */}
+      <div className="flex items-center gap-4 mb-8">
+        <div className="flex-1 h-px bg-[#e5e7eb]" />
+        <h2 className="text-2xl text-[#6d5bd0] font-semibold whitespace-nowrap">
+          Add Employee
+        </h2>
+        <div className="flex-1 h-px bg-[#e5e7eb]" />
+      </div>
+
+      <style>{`
+        .form-input {
+          transition: all 0.2s ease-in-out;
+        }
+        .form-input:focus {
+          box-shadow: 0 0 0 3px rgba(109, 91, 208, 0.1);
+          border-color: #6d5bd0;
+        }
+      `}</style>
+
+      {/* ================= BASIC INFO ================= */}
+      <p className="text-[#6d5bd0] font-semibold mb-4">Basic Information</p>
+
+      <div className="grid grid-cols-2 gap-6 sm:grid-cols-1 mb-6">
+        <input
+          placeholder="First Name"
+          value={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
+          className="form-input w-full px-4 py-3 rounded-lg border-2 border-[#d5cde8]"
+        />
+        <input
+          placeholder="Last Name"
+          value={lastName}
+          onChange={(e) => setLastName(e.target.value)}
+          className="form-input w-full px-4 py-3 rounded-lg border-2 border-[#d5cde8]"
+        />
+      </div>
+
+      <input
+        placeholder="Email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        className="form-input w-full px-4 py-3 rounded-lg border-2 border-[#d5cde8] mb-6"
+      />
+
+      <input
+        type="password"
+        placeholder="Temporary Password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        className="form-input w-full px-4 py-3 rounded-lg border-2 border-[#d5cde8] mb-8"
+      />
+
+      {/* ================= EMPLOYMENT ================= */}
+      <p className="text-[#6d5bd0] font-semibold mb-4">Employment Details</p>
+
+      <div className="grid grid-cols-2 gap-6 sm:grid-cols-1 mb-8">
+        <select
+  value={designation}
+  onChange={(e) => setDesignation(e.target.value)}
+  className="form-input w-full px-4 py-3 rounded-lg border-2 border-[#d5cde8] bg-white"
+>
+  <option value="">Select Designation</option>
+  <option value="Administrator">Administrator</option>
+  <option value="Manager">Manager</option>
+  <option value="HR">HR</option>
+  <option value="Employee">Employee</option>
+  <option value="Intern">Intern</option>
+</select>
+
+        <input
+          type="number"
+          placeholder="Monthly Salary"
+          value={salary}
+          onChange={(e) => setSalary(e.target.value)}
+          className="form-input w-full px-4 py-3 rounded-lg border-2 border-[#d5cde8]"
+        />
+      </div>
+
+      {/* ================= DOCUMENTS ================= */}
+      <p className="text-[#6d5bd0] font-semibold mb-4">Documents</p>
+
+      <div className="grid grid-cols-2 gap-6 sm:grid-cols-1 mb-8">
+        <input
+          placeholder="Aadhar Number"
+          value={aadhar}
+          onChange={(e) => setAadhar(e.target.value)}
+          className="form-input w-full px-4 py-3 rounded-lg border-2 border-[#d5cde8]"
+        />
+        <input
+          placeholder="PAN Number"
+          value={pan}
+          onChange={(e) => setPan(e.target.value)}
+          className="form-input w-full px-4 py-3 rounded-lg border-2 border-[#d5cde8]"
+        />
+      </div>
+
+      {/* ================= BANK ================= */}
+      <p className="text-[#6d5bd0] font-semibold mb-4">Bank Details</p>
+
+      <div className="grid grid-cols-2 gap-6 sm:grid-cols-1 mb-10">
+        <input
+          placeholder="Account Number"
+          value={accountNo}
+          onChange={(e) => setAccountNo(e.target.value)}
+          className="form-input w-full px-4 py-3 rounded-lg border-2 border-[#d5cde8]"
+        />
+        <input
+          placeholder="IFSC Code"
+          value={ifsc}
+          onChange={(e) => setIfsc(e.target.value)}
+          className="form-input w-full px-4 py-3 rounded-lg border-2 border-[#d5cde8]"
+        />
+      </div>
+
+      {/* ================= FOOTER ================= */}
+      <div className="flex justify-end">
+        <button
+          className="btn-primary bg-[#6d5bd0] text-white px-6 py-2.5 rounded-lg text-sm font-semibold hover:bg-[#5a4099]"
+          onClick={handleaddu}
         >
-          <div
-            className="w-full max-w-2xl bg-white rounded-xl p-8 sm:p-6 relative font-sans max-h-[90vh] overflow-auto shadow-lg"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* CLOSE BUTTON */}
-            <button
-              className="absolute top-6 right-6 bg-none border-none cursor-pointer text-[#6d5bd0] hover:text-[#5a4099] transition-colors"
-              onClick={() => setoverlay(false)}
-            >
-              <X size={24} />
-            </button>
+          {loading ? "Adding..." : "Save Employee →"}
+        </button>
+      </div>
+    </div>
+  </div>
+)}
 
-            {/* TITLE */}
-            <div className="flex items-center gap-4 mb-8">
-              <div className="flex-1 h-px bg-[#e5e7eb]"></div>
-              <h2 className="text-2xl text-[#6d5bd0] font-semibold whitespace-nowrap">Add Employee</h2>
-              <div className="flex-1 h-px bg-[#e5e7eb]"></div>
-            </div>
-
-            {/* SECTION */}
-            <div className="mb-8">
-              <p className="text-[#6d5bd0] font-semibold mb-6">
-                Basic Details<span className="text-red-600 ml-1">*</span>
-              </p>
-
-              <style>{`
-                .form-input {
-                  transition: all 0.2s ease-in-out;
-                }
-                .form-input:focus {
-                  box-shadow: 0 0 0 3px rgba(109, 91, 208, 0.1);
-                  border-color: #6d5bd0;
-                }
-              `}</style>
-
-              <div className="grid grid-cols-2 gap-6 mb-5 sm:grid-cols-1">
-                <div className="relative">
-                  <span className="absolute -top-3 left-4 bg-white px-1 text-xs text-[#666]">First name</span>
-                  <input
-                    value={firstName}
-                    onChange={(e) => setFirstName(e.target.value)}
-                    className="form-input w-full px-4 py-3 rounded-lg border-2 border-[#d5cde8] outline-none text-sm"
-                  />
-                </div>
-
-                <div className="relative">
-                  <span className="absolute -top-3 left-4 bg-white px-1 text-xs text-[#666]">Last name</span>
-                  <input
-                    value={lastName}
-                    onChange={(e) => setLastName(e.target.value)}
-                    className="form-input w-full px-4 py-3 rounded-lg border-2 border-[#d5cde8] outline-none text-sm"
-                  />
-                </div>
-              </div>
-
-              <div className="mb-5 relative">
-                <span className="absolute -top-3 left-4 bg-white px-1 text-xs text-[#666]">Email ID</span>
-                <input
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="form-input w-full px-4 py-3 rounded-lg border-2 border-[#d5cde8] outline-none text-sm"
-                />
-              </div>
-
-              <div className="mb-6 relative">
-                <span className="absolute -top-3 left-4 bg-white px-1 text-xs text-[#666]">Password</span>
-                <input
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="form-input w-full px-4 py-3 rounded-lg border-2 border-[#d5cde8] outline-none text-sm"
-                />
-              </div>
-            </div>
-
-            {/* FOOTER */}
-            <div className="flex justify-end mt-8">
-              <button
-                className="btn-primary bg-[#6d5bd0] text-white border-none px-6 sm:px-4 py-2.5 rounded-lg text-sm font-semibold cursor-pointer hover:bg-[#5a4099]"
-                onClick={handleaddu}
-              >
-                {loading ? "Adding..." : "Save →"}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* TASK MODAL */}
       {taskmodal && <Createtaskmodal modal={taskmodal} setModal={setTaskmodal} projects={projects} users={employees} />}

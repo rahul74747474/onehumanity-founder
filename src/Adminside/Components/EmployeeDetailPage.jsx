@@ -285,7 +285,8 @@ const EmployeeDetail = () => {
                         initial={{ width: 0 }}
                         animate={{ width: '85%' }}
                         transition={{ duration: 1, ease: 'easeOut' }}
-                        className="h-full bg-gradient-primary"
+                       className="h-full bg-gradient-to-r from-violet-500 to-purple-600"
+
                       />
                     </div>
                   </div>
@@ -322,15 +323,16 @@ const EmployeeDetail = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <p className="text-sm text-slate-500 mb-2">Aadhar Number</p>
-                    <p className="text-slate-900 font-medium">{employee.aadharNumber || 'Not Provided'}</p>
+                    <p className="text-slate-900 font-medium">{employee.documents?.aadhar || 'Not Provided'}</p>
                   </div>
                   <div>
                     <p className="text-sm text-slate-500 mb-2">PAN Number</p>
-                    <p className="text-slate-900 font-medium">{employee.panNumber || 'Not Provided'}</p>
+                    <p className="text-slate-900 font-medium">{employee.documents?.pan || 'Not Provided'}</p>
                   </div>
                   <div>
                     <p className="text-sm text-slate-500 mb-2">Bank Account</p>
-                    <p className="text-slate-900 font-medium">{employee.bankAccount || 'Not Provided'}</p>
+                    <p className="text-slate-900 font-medium">{employee.bankdetails?.accountno || 'Not Provided'}</p>
+                    <p className="text-slate-900 font-medium">{employee.bankdetails?.ifsc || 'Not Provided'}</p>
                   </div>
                   <div>
                     <p className="text-sm text-slate-500 mb-2">Onboarding Status</p>
@@ -377,7 +379,7 @@ const EmployeeDetail = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <p className="text-sm text-slate-500 mb-2">Monthly Salary</p>
-                    <p className="text-2xl font-bold gradient-text">₹{employee.salary?.toLocaleString() || 'N/A'}</p>
+                    <p className="text-2xl font-bold gradient-text">₹{employee.salary?.amount?.toLocaleString() || "N/A"}</p>
                   </div>
                   <div>
                     <p className="text-sm text-slate-500 mb-2">Payment Status</p>
@@ -385,7 +387,8 @@ const EmployeeDetail = () => {
                   </div>
                   <div>
                     <p className="text-sm text-slate-500 mb-2">Bank Account</p>
-                    <p className="text-slate-900 font-medium">{employee.bankAccount || 'Not Provided'}</p>
+                    <p className="text-slate-900 font-medium">{employee.bankdetails?.accountno || 'Not Provided'}</p>
+                    <p className="text-slate-900 font-medium">{employee.bankdetails?.ifsc|| 'Not Provided'}</p>
                   </div>
                   <div>
                     <p className="text-sm text-slate-500 mb-2">Last Payment Date</p>
@@ -397,7 +400,7 @@ const EmployeeDetail = () => {
                   <div className="grid grid-cols-3 gap-4 text-sm">
                     <div className="bg-slate-50 p-3 rounded-lg">
                       <p className="text-slate-500">Base Salary</p>
-                      <p className="text-slate-900 font-semibold mt-1">₹{(employee.salary * 0.7)?.toLocaleString() || '0'}</p>
+                      <p className="text-slate-900 font-semibold mt-1">₹{(employee.salary?.amount * 0.7)?.toLocaleString() || '0'}</p>
                     </div>
                     <div className="bg-slate-50 p-3 rounded-lg">
                       <p className="text-slate-500">Allowances</p>
